@@ -14,6 +14,7 @@ namespace BL
         public static ML.Result Add(ML.Grupo grupo)
         {
             ML.Result result = new ML.Result();
+
             try
             {
                 // Validación de claves foráneas
@@ -32,37 +33,55 @@ namespace BL
                             try
                             {
                                 string query = "GrupoAdd";
+
                                 using (SqlCommand cmd = new SqlCommand(query, context, transaction))
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
 
-                                    cmd.Parameters.AddWithValue("@Nombre", grupo.Nombregrupo);
-                                    cmd.Parameters.AddWithValue("@IdMateria", grupo.IdMateria);
-                                    cmd.Parameters.AddWithValue("@IdProfesor", grupo.IdProfesor);
-
-                                    int rowsAffected = cmd.ExecuteNonQuery();
-
-                                    if (rowsAffected > 0)
+                                    // Validación de parámetros
+                                    if (grupo != null)
                                     {
-                                        // Confirma la transacción si todo ha ido bien
-                                        transaction.Commit();
-                                        result.Correct = true;
+                                        cmd.Parameters.AddWithValue("@Nombre", grupo.Nombregrupo);
+                                        cmd.Parameters.AddWithValue("@IdMateria", grupo.IdMateria);
+                                        cmd.Parameters.AddWithValue("@IdProfesor", grupo.IdProfesor);
+
+                                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                                        if (rowsAffected > 0)
+                                        {
+                                            // Confirma la transacción si todo ha ido bien
+                                            transaction.Commit();
+                                            result.Correct = true;
+                                        }
+                                        else
+                                        {
+                                            // Si no se afectaron filas, algo salió mal, realiza un rollback
+                                            transaction.Rollback();
+                                            result.Correct = false;
+                                            result.ErrorMessage = "No se pudo agregar el registro.";
+                                        }
                                     }
                                     else
                                     {
-                                        // Si no se afectaron filas, algo salió mal, realiza un rollback
-                                        transaction.Rollback();
+                                        // Parámetros nulos, manejar el error
                                         result.Correct = false;
-                                        result.ErrorMessage = "No se pudo agregar el registro.";
+                                        result.ErrorMessage = "Los parámetros de entrada no pueden ser nulos.";
                                     }
                                 }
                             }
-                            catch (Exception ex)
+                            catch (SqlException ex)
                             {
-                                // Si hay una excepción, realiza un rollback y establece el error
+                                // Si hay una excepción específica de SQL, realiza un rollback y establece el error
                                 transaction.Rollback();
                                 result.Correct = false;
-                                result.ErrorMessage = ex.Message;
+                                result.ErrorMessage = $"Error de SQL: {ex.Message}";
+                            }
+                            catch (Exception ex)
+                            {
+                                // Otro tipo de excepción, realiza un rollback y establece el error
+                                transaction.Rollback();
+                                result.Correct = false;
+                                result.ErrorMessage = $"Error inesperado: {ex.Message}";
                             }
                         }
                     }
@@ -75,15 +94,18 @@ namespace BL
             }
             catch (Exception ex)
             {
+                // Excepción general, establece el error
                 result.Correct = false;
-                result.ErrorMessage = ex.Message;
+                result.ErrorMessage = $"Error general: {ex.Message}";
             }
 
             return result;
         }
+
         public static ML.Result Update(ML.Grupo grupo)
         {
             ML.Result result = new ML.Result();
+
             try
             {
                 // Validación de claves foráneas
@@ -102,38 +124,56 @@ namespace BL
                             try
                             {
                                 string query = "GrupoUpdate";
+
                                 using (SqlCommand cmd = new SqlCommand(query, context, transaction))
                                 {
                                     cmd.CommandType = CommandType.StoredProcedure;
 
-                                    cmd.Parameters.AddWithValue("@IdGrupo", grupo.IdGrupo);
-                                    cmd.Parameters.AddWithValue("@Nombre", grupo.Nombregrupo);
-                                    cmd.Parameters.AddWithValue("@IdMateria", grupo.IdMateria);
-                                    cmd.Parameters.AddWithValue("@IdProfesor", grupo.IdProfesor);
-
-                                    int rowsAffected = cmd.ExecuteNonQuery();
-
-                                    if (rowsAffected > 0)
+                                    // Validación de parámetros
+                                    if (grupo != null)
                                     {
-                                        // Confirma la transacción si todo ha ido bien
-                                        transaction.Commit();
-                                        result.Correct = true;
+                                        cmd.Parameters.AddWithValue("@IdGrupo", grupo.IdGrupo);
+                                        cmd.Parameters.AddWithValue("@Nombre", grupo.Nombregrupo);
+                                        cmd.Parameters.AddWithValue("@IdMateria", grupo.IdMateria);
+                                        cmd.Parameters.AddWithValue("@IdProfesor", grupo.IdProfesor);
+
+                                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                                        if (rowsAffected > 0)
+                                        {
+                                            // Confirma la transacción si todo ha ido bien
+                                            transaction.Commit();
+                                            result.Correct = true;
+                                        }
+                                        else
+                                        {
+                                            // Si no se afectaron filas, realiza un rollback
+                                            transaction.Rollback();
+                                            result.Correct = false;
+                                            result.ErrorMessage = "No se pudo actualizar el registro. Puede ser que el ID no exista.";
+                                        }
                                     }
                                     else
                                     {
-                                        // Si no se afectaron filas, algo salió mal, realiza un rollback
-                                        transaction.Rollback();
+                                        // Parámetros nulos, manejar el error
                                         result.Correct = false;
-                                        result.ErrorMessage = "No se pudo actualizar el registro. Puede ser que el ID no exista.";
+                                        result.ErrorMessage = "Los parámetros de entrada no pueden ser nulos.";
                                     }
                                 }
                             }
-                            catch (Exception ex)
+                            catch (SqlException ex)
                             {
-                                // Si hay una excepción, realiza un rollback y establece el error
+                                // Si hay una excepción específica de SQL, realiza un rollback y establece el error
                                 transaction.Rollback();
                                 result.Correct = false;
-                                result.ErrorMessage = ex.Message;
+                                result.ErrorMessage = $"Error de SQL: {ex.Message}";
+                            }
+                            catch (Exception ex)
+                            {
+                                // Otro tipo de excepción, realiza un rollback y establece el error
+                                transaction.Rollback();
+                                result.Correct = false;
+                                result.ErrorMessage = $"Error inesperado: {ex.Message}";
                             }
                         }
                     }
@@ -146,11 +186,14 @@ namespace BL
             }
             catch (Exception ex)
             {
+                // Excepción general, establece el error
                 result.Correct = false;
-                result.ErrorMessage = ex.Message;
+                result.ErrorMessage = $"Error general: {ex.Message}";
             }
+
             return result;
         }
+
         public static ML.Result Delete(int IdGrupo)
         {
             ML.Result result = new ML.Result();
@@ -236,17 +279,16 @@ namespace BL
 
             return result;
         }
-
-
-
         public static ML.Result GetById(int IdGrupo)
         {
             ML.Result result = new ML.Result();
+
             try
             {
                 using (SqlConnection context = new SqlConnection(DL.Conexion.Get()))
                 {
                     string query = "GrupoGetById";
+
                     using (SqlCommand cmd = new SqlCommand(query, context))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
@@ -266,18 +308,12 @@ namespace BL
 
                                 grupo.IdGrupo = Convert.ToInt32(reader["IdGrupo"]);
                                 grupo.Nombregrupo = reader["NombreGrupo"].ToString();
-
-
-                                grupo.IdMateria = Convert.ToInt32(reader["IdMateria"]);
                                 grupo.NombreMateria = reader["NombreMateria"].ToString();
-
-
-                                grupo.IdProfesor = Convert.ToInt32(reader["IdProfesor"]);
                                 grupo.NombreProfesor = reader["NombreProfesor"].ToString();
-                               
 
                                 result.Objects.Add(grupo);
                             }
+
                             result.Correct = true;
                         }
                         else
@@ -293,7 +329,9 @@ namespace BL
                 result.Correct = false;
                 result.ErrorMessage = ex.Message;
             }
+
             return result;
         }
+
     }
 }

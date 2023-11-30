@@ -213,6 +213,7 @@
     <Content Include="Views\Alumno\Form.cshtml" />
     <Content Include="Views\Grupo\Modal.cshtml" />
     <Content Include="Views\Grupo\GetAll.cshtml" />
+    <Content Include="Views\Grupo\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
