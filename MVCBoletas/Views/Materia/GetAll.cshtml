@@ -1,0 +1,47 @@
+﻿@model ML.Materia
+@{
+    ViewBag.Title = "GetAll";
+}
+
+<h2>Materias</h2>
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h5>Seleccione una Materia para editarla o + para agregar...</h5>
+        <hr />
+    </div>
+</div>
+
+<div style="float:right;">
+    @Html.ActionLink("+", "Form", "Materia", htmlAttributes: new { @class = "btn btn-success" })
+</div>
+<br />
+
+<table class="table table-bordered table-responsive">
+    <thead>
+        <tr>
+            <td>Editar</td>
+            <td class="visually-hidden">IdMateria</td>
+            <td>Nombre</td>
+            <td>Descripcion</td>
+
+            <td>Eliminar</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ML.Materia materia in Model.Materias)
+        {
+            <tr>
+                <td><a class="btn btn-warning" href="@Url.Action("Form", "Materia", new {IdMateria = materia.IdMateria})"><i class="fas fa-pencil-alt"></i></a></td>
+
+                <td class="visually-hidden">@materia.IdMateria</td>
+                <td>@materia.Nombre</td>
+                <td>@materia.Descripcion</td>
+
+                <td><a class="btn btn-danger" href="@Url.Action("Delete", "Materia", new {IdMateria = materia.IdMateria })" onclick="return confirm('Estás seguro que deseas eliminar este registro?');"><i class="fas fa-trash"></i></a></td>
+            </tr>
+        }
+    </tbody>
+</table>

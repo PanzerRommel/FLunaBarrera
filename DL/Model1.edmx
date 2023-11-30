@@ -1,0 +1,797 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FLunaBarreraModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Alumno">
+          <Key>
+            <PropertyRef Name="IdAlumno" />
+          </Key>
+          <Property Name="IdAlumno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="NumeroBoleta" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="Telefono" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Calificacion">
+          <Key>
+            <PropertyRef Name="IdCalificacion" />
+          </Key>
+          <Property Name="IdCalificacion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdAlumno" Type="int" />
+          <Property Name="IdGrupo" Type="int" />
+          <Property Name="IdMateria" Type="int" />
+          <Property Name="IdProfesor" Type="int" />
+          <Property Name="Calificacion" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="Grupo">
+          <Key>
+            <PropertyRef Name="IdGrupo" />
+          </Key>
+          <Property Name="IdGrupo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IdMateria" Type="int" />
+          <Property Name="IdProfesor" Type="int" />
+        </EntityType>
+        <EntityType Name="Materia">
+          <Key>
+            <PropertyRef Name="IdMateria" />
+          </Key>
+          <Property Name="IdMateria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Profesor">
+          <Key>
+            <PropertyRef Name="IdProfesor" />
+          </Key>
+          <Property Name="IdProfesor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Usuario" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="Telefono" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Calificac__IdAlu__3D5E1FD2">
+          <End Role="Alumno" Type="Self.Alumno" Multiplicity="0..1" />
+          <End Role="Calificacion" Type="Self.Calificacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumno">
+              <PropertyRef Name="IdAlumno" />
+            </Principal>
+            <Dependent Role="Calificacion">
+              <PropertyRef Name="IdAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calificac__IdGru__3E52440B">
+          <End Role="Grupo" Type="Self.Grupo" Multiplicity="0..1" />
+          <End Role="Calificacion" Type="Self.Calificacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grupo">
+              <PropertyRef Name="IdGrupo" />
+            </Principal>
+            <Dependent Role="Calificacion">
+              <PropertyRef Name="IdGrupo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calificac__IdMat__3F466844">
+          <End Role="Materia" Type="Self.Materia" Multiplicity="0..1" />
+          <End Role="Calificacion" Type="Self.Calificacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Materia">
+              <PropertyRef Name="IdMateria" />
+            </Principal>
+            <Dependent Role="Calificacion">
+              <PropertyRef Name="IdMateria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calificac__IdPro__403A8C7D">
+          <End Role="Profesor" Type="Self.Profesor" Multiplicity="0..1" />
+          <End Role="Calificacion" Type="Self.Calificacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesor">
+              <PropertyRef Name="IdProfesor" />
+            </Principal>
+            <Dependent Role="Calificacion">
+              <PropertyRef Name="IdProfesor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Grupo__IdMateria__29572725">
+          <End Role="Materia" Type="Self.Materia" Multiplicity="0..1" />
+          <End Role="Grupo" Type="Self.Grupo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Materia">
+              <PropertyRef Name="IdMateria" />
+            </Principal>
+            <Dependent Role="Grupo">
+              <PropertyRef Name="IdMateria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Grupo__IdProfeso__2A4B4B5E">
+          <End Role="Profesor" Type="Self.Profesor" Multiplicity="0..1" />
+          <End Role="Grupo" Type="Self.Grupo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesor">
+              <PropertyRef Name="IdProfesor" />
+            </Principal>
+            <Dependent Role="Grupo">
+              <PropertyRef Name="IdProfesor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AlumnoAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="NumeroBoleta" Type="varchar" Mode="In" />
+          <Parameter Name="UserName" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Telefono" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="AlumnoDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdAlumno" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AlumnoGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="AlumnoGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdAlumno" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CalificacionAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdAlumno" Type="int" Mode="In" />
+          <Parameter Name="IdGrupo" Type="int" Mode="In" />
+          <Parameter Name="IdMateria" Type="int" Mode="In" />
+          <Parameter Name="IdProfesor" Type="int" Mode="In" />
+          <Parameter Name="Calificacion" Type="decimal" Mode="In" />
+        </Function>
+        <Function Name="CalificacionDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCalificacion" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CalificacionGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="CalificacionGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCalificacion" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CalificacionUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCalificacion" Type="int" Mode="In" />
+          <Parameter Name="IdAlumno" Type="int" Mode="In" />
+          <Parameter Name="IdGrupo" Type="int" Mode="In" />
+          <Parameter Name="IdMateria" Type="int" Mode="In" />
+          <Parameter Name="IdProfesor" Type="int" Mode="In" />
+          <Parameter Name="Calificacion" Type="decimal" Mode="In" />
+        </Function>
+        <Function Name="GrupoAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="IdMateria" Type="int" Mode="In" />
+          <Parameter Name="IdProfesor" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GrupoDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdGrupo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GrupoGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GrupoGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdGrupo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GrupoUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdGrupo" Type="int" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="IdMateria" Type="int" Mode="In" />
+          <Parameter Name="IdProfesor" Type="int" Mode="In" />
+        </Function>
+        <Function Name="MateriaAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Descripcion" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="MateriaDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdMateria" Type="int" Mode="In" />
+        </Function>
+        <Function Name="MateriaGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MateriaGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdMateria" Type="int" Mode="In" />
+        </Function>
+        <Function Name="MateriaUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdMateria" Type="int" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Descripcion" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="ProfesorAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Usuario" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+          <Parameter Name="Telefono" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="ProfesorDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdProfesor" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ProfesorGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="ProfesorGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdProfesor" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ProfesorUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdProfesor" Type="int" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+          <Parameter Name="Usuario" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+          <Parameter Name="Telefono" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="FLunaBarreraModelStoreContainer">
+          <EntitySet Name="Alumno" EntityType="Self.Alumno" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Calificacion" EntityType="Self.Calificacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Grupo" EntityType="Self.Grupo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Materia" EntityType="Self.Materia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Profesor" EntityType="Self.Profesor" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Calificac__IdAlu__3D5E1FD2" Association="Self.FK__Calificac__IdAlu__3D5E1FD2">
+            <End Role="Alumno" EntitySet="Alumno" />
+            <End Role="Calificacion" EntitySet="Calificacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calificac__IdGru__3E52440B" Association="Self.FK__Calificac__IdGru__3E52440B">
+            <End Role="Grupo" EntitySet="Grupo" />
+            <End Role="Calificacion" EntitySet="Calificacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calificac__IdMat__3F466844" Association="Self.FK__Calificac__IdMat__3F466844">
+            <End Role="Materia" EntitySet="Materia" />
+            <End Role="Calificacion" EntitySet="Calificacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calificac__IdPro__403A8C7D" Association="Self.FK__Calificac__IdPro__403A8C7D">
+            <End Role="Profesor" EntitySet="Profesor" />
+            <End Role="Calificacion" EntitySet="Calificacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Grupo__IdMateria__29572725" Association="Self.FK__Grupo__IdMateria__29572725">
+            <End Role="Materia" EntitySet="Materia" />
+            <End Role="Grupo" EntitySet="Grupo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Grupo__IdProfeso__2A4B4B5E" Association="Self.FK__Grupo__IdProfeso__2A4B4B5E">
+            <End Role="Profesor" EntitySet="Profesor" />
+            <End Role="Grupo" EntitySet="Grupo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FLunaBarreraModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Alumno">
+          <Key>
+            <PropertyRef Name="IdAlumno" />
+          </Key>
+          <Property Name="IdAlumno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NumeroBoleta" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Calificacion" Relationship="Self.FK__Calificac__IdAlu__3D5E1FD2" FromRole="Alumno" ToRole="Calificacion" />
+        </EntityType>
+        <EntityType Name="Calificacion">
+          <Key>
+            <PropertyRef Name="IdCalificacion" />
+          </Key>
+          <Property Name="IdCalificacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdAlumno" Type="Int32" />
+          <Property Name="IdGrupo" Type="Int32" />
+          <Property Name="IdMateria" Type="Int32" />
+          <Property Name="IdProfesor" Type="Int32" />
+          <Property Name="Calificacion1" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="Alumno" Relationship="Self.FK__Calificac__IdAlu__3D5E1FD2" FromRole="Calificacion" ToRole="Alumno" />
+          <NavigationProperty Name="Grupo" Relationship="Self.FK__Calificac__IdGru__3E52440B" FromRole="Calificacion" ToRole="Grupo" />
+          <NavigationProperty Name="Materia" Relationship="Self.FK__Calificac__IdMat__3F466844" FromRole="Calificacion" ToRole="Materia" />
+          <NavigationProperty Name="Profesor" Relationship="Self.FK__Calificac__IdPro__403A8C7D" FromRole="Calificacion" ToRole="Profesor" />
+        </EntityType>
+        <EntityType Name="Grupo">
+          <Key>
+            <PropertyRef Name="IdGrupo" />
+          </Key>
+          <Property Name="IdGrupo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdMateria" Type="Int32" />
+          <Property Name="IdProfesor" Type="Int32" />
+          <NavigationProperty Name="Calificacion" Relationship="Self.FK__Calificac__IdGru__3E52440B" FromRole="Grupo" ToRole="Calificacion" />
+          <NavigationProperty Name="Materia" Relationship="Self.FK__Grupo__IdMateria__29572725" FromRole="Grupo" ToRole="Materia" />
+          <NavigationProperty Name="Profesor" Relationship="Self.FK__Grupo__IdProfeso__2A4B4B5E" FromRole="Grupo" ToRole="Profesor" />
+        </EntityType>
+        <EntityType Name="Materia">
+          <Key>
+            <PropertyRef Name="IdMateria" />
+          </Key>
+          <Property Name="IdMateria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Calificacion" Relationship="Self.FK__Calificac__IdMat__3F466844" FromRole="Materia" ToRole="Calificacion" />
+          <NavigationProperty Name="Grupo" Relationship="Self.FK__Grupo__IdMateria__29572725" FromRole="Materia" ToRole="Grupo" />
+        </EntityType>
+        <EntityType Name="Profesor">
+          <Key>
+            <PropertyRef Name="IdProfesor" />
+          </Key>
+          <Property Name="IdProfesor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Usuario" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefono" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Calificacion" Relationship="Self.FK__Calificac__IdPro__403A8C7D" FromRole="Profesor" ToRole="Calificacion" />
+          <NavigationProperty Name="Grupo" Relationship="Self.FK__Grupo__IdProfeso__2A4B4B5E" FromRole="Profesor" ToRole="Grupo" />
+        </EntityType>
+        <Association Name="FK__Calificac__IdAlu__3D5E1FD2">
+          <End Role="Alumno" Type="Self.Alumno" Multiplicity="0..1" />
+          <End Role="Calificacion" Type="Self.Calificacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumno">
+              <PropertyRef Name="IdAlumno" />
+            </Principal>
+            <Dependent Role="Calificacion">
+              <PropertyRef Name="IdAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calificac__IdGru__3E52440B">
+          <End Role="Grupo" Type="Self.Grupo" Multiplicity="0..1" />
+          <End Role="Calificacion" Type="Self.Calificacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grupo">
+              <PropertyRef Name="IdGrupo" />
+            </Principal>
+            <Dependent Role="Calificacion">
+              <PropertyRef Name="IdGrupo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calificac__IdMat__3F466844">
+          <End Role="Materia" Type="Self.Materia" Multiplicity="0..1" />
+          <End Role="Calificacion" Type="Self.Calificacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Materia">
+              <PropertyRef Name="IdMateria" />
+            </Principal>
+            <Dependent Role="Calificacion">
+              <PropertyRef Name="IdMateria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calificac__IdPro__403A8C7D">
+          <End Role="Profesor" Type="Self.Profesor" Multiplicity="0..1" />
+          <End Role="Calificacion" Type="Self.Calificacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesor">
+              <PropertyRef Name="IdProfesor" />
+            </Principal>
+            <Dependent Role="Calificacion">
+              <PropertyRef Name="IdProfesor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Grupo__IdMateria__29572725">
+          <End Role="Materia" Type="Self.Materia" Multiplicity="0..1" />
+          <End Role="Grupo" Type="Self.Grupo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Materia">
+              <PropertyRef Name="IdMateria" />
+            </Principal>
+            <Dependent Role="Grupo">
+              <PropertyRef Name="IdMateria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Grupo__IdProfeso__2A4B4B5E">
+          <End Role="Profesor" Type="Self.Profesor" Multiplicity="0..1" />
+          <End Role="Grupo" Type="Self.Grupo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profesor">
+              <PropertyRef Name="IdProfesor" />
+            </Principal>
+            <Dependent Role="Grupo">
+              <PropertyRef Name="IdProfesor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FLunaBarreraEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Alumno" EntityType="Self.Alumno" />
+          <EntitySet Name="Calificacion" EntityType="Self.Calificacion" />
+          <EntitySet Name="Grupo" EntityType="Self.Grupo" />
+          <EntitySet Name="Materia" EntityType="Self.Materia" />
+          <EntitySet Name="Profesor" EntityType="Self.Profesor" />
+          <AssociationSet Name="FK__Calificac__IdAlu__3D5E1FD2" Association="Self.FK__Calificac__IdAlu__3D5E1FD2">
+            <End Role="Alumno" EntitySet="Alumno" />
+            <End Role="Calificacion" EntitySet="Calificacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calificac__IdGru__3E52440B" Association="Self.FK__Calificac__IdGru__3E52440B">
+            <End Role="Grupo" EntitySet="Grupo" />
+            <End Role="Calificacion" EntitySet="Calificacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calificac__IdMat__3F466844" Association="Self.FK__Calificac__IdMat__3F466844">
+            <End Role="Materia" EntitySet="Materia" />
+            <End Role="Calificacion" EntitySet="Calificacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calificac__IdPro__403A8C7D" Association="Self.FK__Calificac__IdPro__403A8C7D">
+            <End Role="Profesor" EntitySet="Profesor" />
+            <End Role="Calificacion" EntitySet="Calificacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Grupo__IdMateria__29572725" Association="Self.FK__Grupo__IdMateria__29572725">
+            <End Role="Materia" EntitySet="Materia" />
+            <End Role="Grupo" EntitySet="Grupo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Grupo__IdProfeso__2A4B4B5E" Association="Self.FK__Grupo__IdProfeso__2A4B4B5E">
+            <End Role="Profesor" EntitySet="Profesor" />
+            <End Role="Grupo" EntitySet="Grupo" />
+          </AssociationSet>
+          <FunctionImport Name="AlumnoAdd">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="NumeroBoleta" Mode="In" Type="String" />
+            <Parameter Name="UserName" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Telefono" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AlumnoDelete">
+          <Parameter Name="IdAlumno" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AlumnoGetAll" ReturnType="Collection(FLunaBarreraModel.AlumnoGetAll_Result)" />
+          <FunctionImport Name="AlumnoGetById" ReturnType="Collection(FLunaBarreraModel.AlumnoGetById_Result)">
+          <Parameter Name="IdAlumno" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CalificacionAdd">
+            <Parameter Name="IdAlumno" Mode="In" Type="Int32" />
+            <Parameter Name="IdGrupo" Mode="In" Type="Int32" />
+            <Parameter Name="IdMateria" Mode="In" Type="Int32" />
+            <Parameter Name="IdProfesor" Mode="In" Type="Int32" />
+            <Parameter Name="Calificacion" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="CalificacionDelete">
+          <Parameter Name="IdCalificacion" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CalificacionGetAll" ReturnType="Collection(FLunaBarreraModel.CalificacionGetAll_Result)" />
+          <FunctionImport Name="CalificacionGetById" ReturnType="Collection(FLunaBarreraModel.CalificacionGetById_Result)">
+          <Parameter Name="IdCalificacion" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CalificacionUpdate">
+            <Parameter Name="IdCalificacion" Mode="In" Type="Int32" />
+            <Parameter Name="IdAlumno" Mode="In" Type="Int32" />
+            <Parameter Name="IdGrupo" Mode="In" Type="Int32" />
+            <Parameter Name="IdMateria" Mode="In" Type="Int32" />
+            <Parameter Name="IdProfesor" Mode="In" Type="Int32" />
+            <Parameter Name="Calificacion" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="GrupoAdd">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="IdMateria" Mode="In" Type="Int32" />
+            <Parameter Name="IdProfesor" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GrupoDelete">
+          <Parameter Name="IdGrupo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GrupoGetAll" ReturnType="Collection(FLunaBarreraModel.GrupoGetAll_Result)" />
+          <FunctionImport Name="GrupoGetById" ReturnType="Collection(FLunaBarreraModel.GrupoGetById_Result)">
+          <Parameter Name="IdGrupo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GrupoUpdate">
+            <Parameter Name="IdGrupo" Mode="In" Type="Int32" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="IdMateria" Mode="In" Type="Int32" />
+            <Parameter Name="IdProfesor" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="MateriaAdd">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Descripcion" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="MateriaDelete">
+          <Parameter Name="IdMateria" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="MateriaGetAll" ReturnType="Collection(FLunaBarreraModel.MateriaGetAll_Result)" />
+          <FunctionImport Name="MateriaGetById" ReturnType="Collection(FLunaBarreraModel.MateriaGetById_Result)">
+          <Parameter Name="IdMateria" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="MateriaUpdate">
+            <Parameter Name="IdMateria" Mode="In" Type="Int32" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Descripcion" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ProfesorAdd">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Usuario" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="Telefono" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ProfesorDelete">
+          <Parameter Name="IdProfesor" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ProfesorGetAll" ReturnType="Collection(FLunaBarreraModel.ProfesorGetAll_Result)" />
+          <FunctionImport Name="ProfesorGetById" ReturnType="Collection(FLunaBarreraModel.ProfesorGetById_Result)">
+          <Parameter Name="IdProfesor" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ProfesorUpdate">
+            <Parameter Name="IdProfesor" Mode="In" Type="Int32" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Usuario" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="Telefono" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="AlumnoGetAll_Result">
+          <Property Type="Int32" Name="IdAlumno" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NumeroBoleta" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="Telefono" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="AlumnoGetById_Result">
+          <Property Type="Int32" Name="IdAlumno" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NumeroBoleta" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="Telefono" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="CalificacionGetAll_Result">
+          <Property Type="Int32" Name="IdCalificacion" Nullable="false" />
+          <Property Type="String" Name="NombreAlumno" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NombreGrupo" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NombreMateria" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NombreProfesor" Nullable="false" MaxLength="100" />
+          <Property Type="Decimal" Name="Calificacion" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="Decimal" Name="PromedioFinal" Nullable="true" Precision="38" Scale="6" />
+        </ComplexType>
+        <ComplexType Name="CalificacionGetById_Result">
+          <Property Type="Int32" Name="IdCalificacion" Nullable="false" />
+          <Property Type="String" Name="NombreAlumno" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NombreGrupo" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NombreMateria" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NombreProfesor" Nullable="false" MaxLength="100" />
+          <Property Type="Decimal" Name="Calificacion" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="Decimal" Name="PromedioFinal" Nullable="true" Precision="38" Scale="6" />
+        </ComplexType>
+        <ComplexType Name="GrupoGetAll_Result">
+          <Property Type="Int32" Name="IdGrupo" Nullable="false" />
+          <Property Type="String" Name="NombreGrupo" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NombreMateria" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NombreProfesor" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="GrupoGetById_Result">
+          <Property Type="Int32" Name="IdGrupo" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NombreMateria" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NombreProfesor" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="MateriaGetAll_Result">
+          <Property Type="Int32" Name="IdMateria" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Descripcion" Nullable="true" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="MateriaGetById_Result">
+          <Property Type="Int32" Name="IdMateria" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Descripcion" Nullable="true" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="ProfesorGetAll_Result">
+          <Property Type="Int32" Name="IdProfesor" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Usuario" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Telefono" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="ProfesorGetById_Result">
+          <Property Type="Int32" Name="IdProfesor" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="Usuario" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Telefono" Nullable="false" MaxLength="100" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FLunaBarreraModelStoreContainer" CdmEntityContainer="FLunaBarreraEntities">
+          <EntitySetMapping Name="Alumno">
+            <EntityTypeMapping TypeName="FLunaBarreraModel.Alumno">
+              <MappingFragment StoreEntitySet="Alumno">
+                <ScalarProperty Name="IdAlumno" ColumnName="IdAlumno" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="NumeroBoleta" ColumnName="NumeroBoleta" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Calificacion">
+            <EntityTypeMapping TypeName="FLunaBarreraModel.Calificacion">
+              <MappingFragment StoreEntitySet="Calificacion">
+                <ScalarProperty Name="IdCalificacion" ColumnName="IdCalificacion" />
+                <ScalarProperty Name="IdAlumno" ColumnName="IdAlumno" />
+                <ScalarProperty Name="IdGrupo" ColumnName="IdGrupo" />
+                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
+                <ScalarProperty Name="IdProfesor" ColumnName="IdProfesor" />
+                <ScalarProperty Name="Calificacion1" ColumnName="Calificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Grupo">
+            <EntityTypeMapping TypeName="FLunaBarreraModel.Grupo">
+              <MappingFragment StoreEntitySet="Grupo">
+                <ScalarProperty Name="IdGrupo" ColumnName="IdGrupo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
+                <ScalarProperty Name="IdProfesor" ColumnName="IdProfesor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Materia">
+            <EntityTypeMapping TypeName="FLunaBarreraModel.Materia">
+              <MappingFragment StoreEntitySet="Materia">
+                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Profesor">
+            <EntityTypeMapping TypeName="FLunaBarreraModel.Profesor">
+              <MappingFragment StoreEntitySet="Profesor">
+                <ScalarProperty Name="IdProfesor" ColumnName="IdProfesor" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AlumnoAdd" FunctionName="FLunaBarreraModel.Store.AlumnoAdd" />
+          <FunctionImportMapping FunctionImportName="AlumnoDelete" FunctionName="FLunaBarreraModel.Store.AlumnoDelete" />
+          <FunctionImportMapping FunctionImportName="AlumnoGetAll" FunctionName="FLunaBarreraModel.Store.AlumnoGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FLunaBarreraModel.AlumnoGetAll_Result">
+                <ScalarProperty Name="IdAlumno" ColumnName="IdAlumno" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="NumeroBoleta" ColumnName="NumeroBoleta" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="AlumnoGetById" FunctionName="FLunaBarreraModel.Store.AlumnoGetById">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FLunaBarreraModel.AlumnoGetById_Result">
+                <ScalarProperty Name="IdAlumno" ColumnName="IdAlumno" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="NumeroBoleta" ColumnName="NumeroBoleta" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CalificacionAdd" FunctionName="FLunaBarreraModel.Store.CalificacionAdd" />
+          <FunctionImportMapping FunctionImportName="CalificacionDelete" FunctionName="FLunaBarreraModel.Store.CalificacionDelete" />
+          <FunctionImportMapping FunctionImportName="CalificacionGetAll" FunctionName="FLunaBarreraModel.Store.CalificacionGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FLunaBarreraModel.CalificacionGetAll_Result">
+                <ScalarProperty Name="IdCalificacion" ColumnName="IdCalificacion" />
+                <ScalarProperty Name="NombreAlumno" ColumnName="NombreAlumno" />
+                <ScalarProperty Name="NombreGrupo" ColumnName="NombreGrupo" />
+                <ScalarProperty Name="NombreMateria" ColumnName="NombreMateria" />
+                <ScalarProperty Name="NombreProfesor" ColumnName="NombreProfesor" />
+                <ScalarProperty Name="Calificacion" ColumnName="Calificacion" />
+                <ScalarProperty Name="PromedioFinal" ColumnName="PromedioFinal" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CalificacionGetById" FunctionName="FLunaBarreraModel.Store.CalificacionGetById">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FLunaBarreraModel.CalificacionGetById_Result">
+                <ScalarProperty Name="IdCalificacion" ColumnName="IdCalificacion" />
+                <ScalarProperty Name="NombreAlumno" ColumnName="NombreAlumno" />
+                <ScalarProperty Name="NombreGrupo" ColumnName="NombreGrupo" />
+                <ScalarProperty Name="NombreMateria" ColumnName="NombreMateria" />
+                <ScalarProperty Name="NombreProfesor" ColumnName="NombreProfesor" />
+                <ScalarProperty Name="Calificacion" ColumnName="Calificacion" />
+                <ScalarProperty Name="PromedioFinal" ColumnName="PromedioFinal" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CalificacionUpdate" FunctionName="FLunaBarreraModel.Store.CalificacionUpdate" />
+          <FunctionImportMapping FunctionImportName="GrupoAdd" FunctionName="FLunaBarreraModel.Store.GrupoAdd" />
+          <FunctionImportMapping FunctionImportName="GrupoDelete" FunctionName="FLunaBarreraModel.Store.GrupoDelete" />
+          <FunctionImportMapping FunctionImportName="GrupoGetAll" FunctionName="FLunaBarreraModel.Store.GrupoGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FLunaBarreraModel.GrupoGetAll_Result">
+                <ScalarProperty Name="IdGrupo" ColumnName="IdGrupo" />
+                <ScalarProperty Name="NombreGrupo" ColumnName="NombreGrupo" />
+                <ScalarProperty Name="NombreMateria" ColumnName="NombreMateria" />
+                <ScalarProperty Name="NombreProfesor" ColumnName="NombreProfesor" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GrupoGetById" FunctionName="FLunaBarreraModel.Store.GrupoGetById">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FLunaBarreraModel.GrupoGetById_Result">
+                <ScalarProperty Name="IdGrupo" ColumnName="IdGrupo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="NombreMateria" ColumnName="NombreMateria" />
+                <ScalarProperty Name="NombreProfesor" ColumnName="NombreProfesor" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GrupoUpdate" FunctionName="FLunaBarreraModel.Store.GrupoUpdate" />
+          <FunctionImportMapping FunctionImportName="MateriaAdd" FunctionName="FLunaBarreraModel.Store.MateriaAdd" />
+          <FunctionImportMapping FunctionImportName="MateriaDelete" FunctionName="FLunaBarreraModel.Store.MateriaDelete" />
+          <FunctionImportMapping FunctionImportName="MateriaGetAll" FunctionName="FLunaBarreraModel.Store.MateriaGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FLunaBarreraModel.MateriaGetAll_Result">
+                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MateriaGetById" FunctionName="FLunaBarreraModel.Store.MateriaGetById">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FLunaBarreraModel.MateriaGetById_Result">
+                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MateriaUpdate" FunctionName="FLunaBarreraModel.Store.MateriaUpdate" />
+          <FunctionImportMapping FunctionImportName="ProfesorAdd" FunctionName="FLunaBarreraModel.Store.ProfesorAdd" />
+          <FunctionImportMapping FunctionImportName="ProfesorDelete" FunctionName="FLunaBarreraModel.Store.ProfesorDelete" />
+          <FunctionImportMapping FunctionImportName="ProfesorGetAll" FunctionName="FLunaBarreraModel.Store.ProfesorGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FLunaBarreraModel.ProfesorGetAll_Result">
+                <ScalarProperty Name="IdProfesor" ColumnName="IdProfesor" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ProfesorGetById" FunctionName="FLunaBarreraModel.Store.ProfesorGetById">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FLunaBarreraModel.ProfesorGetById_Result">
+                <ScalarProperty Name="IdProfesor" ColumnName="IdProfesor" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ProfesorUpdate" FunctionName="FLunaBarreraModel.Store.ProfesorUpdate" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

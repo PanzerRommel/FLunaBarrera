@@ -1,0 +1,53 @@
+﻿@model ML.Alumno
+@{
+    ViewBag.Title = "GetAll";
+}
+
+<h2>Alumnos</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <h5>Seleccione un Alumno para editarlo o + para agregar...</h5>
+        <hr />
+    </div>
+</div>
+
+<div style="float:right;">
+    @Html.ActionLink("+", "Form", "Alumno", htmlAttributes: new { @class = "btn btn-success" })
+</div>
+<br />
+
+<table class="table table-bordered table-responsive">
+    <thead>
+        <tr>
+            <td>Editar</td>
+
+            <td class="visually-hidden">IdAlumno</td>
+            <td>Nombre</td>
+            <td>Numero de Boleta</td>
+            <td>Usuario</td>
+            <td class="visually-hidden">Password</td>
+            <td>Email</td>
+            <td>Telefono</td>
+
+            <td>Eliminar</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ML.Alumno alumno in Model.Alumnos)
+        {
+            <tr>
+                <td><a class="btn btn-warning" href="@Url.Action("Form", "Alumno", new {IdAlumno = alumno.IdAlumno})"><i class="fas fa-pencil-alt"></i></a></td>
+                <td class="visually-hidden">@alumno.IdAlumno</td>
+                <td>@alumno.Nombre</td>
+                <td>@alumno.NombreBoleta</td>
+                <td>@alumno.UserName</td>
+                <td class="visually-hidden">@alumno.Password</td>
+                <td>@alumno.Email</td>
+                <td>@alumno.Telefono</td>
+
+                <td><a class="btn btn-danger" href="@Url.Action("Delete", "Alumno", new {IdAlumno = alumno.IdAlumno })" onclick="return confirm('Estás seguro que deseas eliminar este registro?');"><i class="fas fa-trash"></i></a></td>
+            </tr>
+        }
+    </tbody>
+</table>

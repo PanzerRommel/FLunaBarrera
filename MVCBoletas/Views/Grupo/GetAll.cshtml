@@ -1,0 +1,62 @@
+﻿@model ML.Grupo
+@{
+    ViewBag.Title = "GetAll";
+}
+
+<h2>Grupos</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <h5>Seleccione un Grupo para editarlo o + para agregar...</h5>
+    </div>
+</div>
+
+<div style="float:right;">
+    @Html.ActionLink("+", "Form", "Grupo", htmlAttributes: new { @class = "btn btn-success" })
+</div>
+<br />
+
+<table class="table table-bordered table-responsive">
+    <thead>
+        <tr>
+            <td>Editar</td>
+
+            <td class="visually-hidden">IdGrupo</td>
+            <td>Nombre del Grupo</td>
+            <td class="visually-hidden">IdMateria</td>
+            <td>Nombre de la Materia</td>
+            <td class="visually-hidden">IdProfesor</td>
+            <td>Nombre del Profesor</td>
+
+            <td>Eliminar</td>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Grupos != null)
+        {
+            foreach (ML.Grupo grupo in Model.Grupos)
+            {
+                <tr>
+                    <td><a class="btn btn-warning" href="@Url.Action("Form", "Grupo", new {IdGrupo = grupo.IdGrupo})"><i class="fas fa-pencil-alt"></i></a></td>
+                    <td class="visually-hidden">@grupo.IdGrupo</td>
+                    <td>@grupo.Nombregrupo</td>
+
+                    <td class="visually-hidden">@grupo.IdMateria</td>
+                    <td>@grupo.NombreMateria</td>
+
+                    <td class="visually-hidden">@grupo.IdProfesor</td>
+                    <td>@grupo.NombreProfesor</td>
+
+                    <td><a class="btn btn-danger" href="@Url.Action("Delete", "Grupo", new {IdGrupo = grupo.IdGrupo })" onclick="return confirm('Estás seguro que deseas eliminar este registro?');"><i class="fas fa-trash"></i></a></td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="7">No hay datos disponibles</td>
+            </tr>
+        }
+    </tbody>
+
+</table>

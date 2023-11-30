@@ -1,0 +1,56 @@
+﻿@model ML.Materia
+
+
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Formulario para agregar una Materia</h2>
+<div class="row">
+    <div class="container">
+        <div class="col-md-12">
+            <h2>Libros</h2>
+            <h5>Ingrese los datos de la Materia:</h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            @* Crea un salto de línea *@
+            <hr />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Form", "Materia", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="form-group">
+                    @Html.HiddenFor(model => model.IdMateria)
+                </div>
+
+                <div class="form-group col-md-4 col-12 col-sm-6">
+                    @Html.LabelFor(model => model.Nombre)
+                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre" })
+                    @Html.ValidationMessageFor(model => model.Nombre)
+                </div>
+
+                <div class="form-group col-md-4 col-12 col-sm-6">
+                    @Html.LabelFor(model => model.Descripcion)
+                    @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control", @id = "txtDescripcion" })
+                    @Html.ValidationMessageFor(model => model.Descripcion)
+                </div>
+
+
+                <div class="col">
+                    <div class="col-md-3">
+                        <input type="submit" value="Guardar" class="btn btn-success" />
+                        @Html.ActionLink("Regresar", "GetAll", "Materia", htmlAttributes: new { @class = "btn btn-danger" })
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
